@@ -1,0 +1,16 @@
+{% extends 'wrapper.html' %}
+{% load static %}
+
+{% block body %}
+<div class="jumbotron">
+	<h1 align="center">Tweet Me is here!</h1>
+	<div class="container" style="padding-top:10px">
+		<div class="row">
+			<div class="col-md-12">
+				Welcome to Tweet Me..!!
+				{{ user.user_id }}
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock body %}

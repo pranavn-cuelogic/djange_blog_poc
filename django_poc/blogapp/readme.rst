@@ -1,0 +1,1 @@
+This is a blogging website where users can posts their views, opinion, thoughts & can view the others blogs too.

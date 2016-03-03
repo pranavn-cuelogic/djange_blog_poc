@@ -1,0 +1,68 @@
+{% extends 'wrapper.html' %}
+{% load static %}
+
+{% block body %}
+<div class="jumbotron pad-50">
+	{% if form.errors %}
+	<p class="error">Please correct the errors below:</p>
+	{% endif %}
+	<h1 align="center">Tweet Me Sign-up here!</h1>
+	<div class="container">
+		<form data-toggle="validator" role="form" action="" method="post" class="custom-form form-horizontal col-md-8 col-md-offset-2 col" name="formSignup" id="formSignup">{% csrf_token %}
+			<div class="form-group">
+				<div class="row">
+					<div class="col-md-6">
+						{{ form.first_name }}
+		    			{% if form.first_name.errors %}
+			    			<div class="help-block with-errors">{{ form.first_name.errors|join:", " }}</div>
+			    		{% endif %}
+					</div>
+					<div class="col-md-6">
+						{{ form.last_name }}
+		    			{% if form.last_name.errors %}
+			    			<div class="help-block with-errors">{{ form.last_name.errors|join:", " }}</div>
+			    		{% endif %}
+					</div>
+					<div class="col-md-6">
+						{{ form.email }}
+				    	{% if form.email.errors %}
+				    	<div class="help-block error with-errors">{{ form.email.errors|join:", " }}</div>
+				    	{% endif %}
+					</div>
+					<div class="clearfix">&nbsp;</div>
+					<div class="col-md-6">
+						{{ form.password }}
+				      	{% if form.password.errors %}
+				      	<div class="help-block with-errors">{{ form.password.errors|join:", " }}</div>
+				      	{% endif %}
+					</div>
+					<div class="col-md-6">
+						{{ form.confirm_password }}
+				      	{% if form.confirm_password.errors %}
+				      	<div class="help-block with-errors">{{ form.confirm_password.errors|join:", " }}</div>
+				      	{% endif %}
+					</div>
+		    	</div>
+		    	<div class="row">
+			    	<div class="col-md-6">
+					      	{{ form.captcha }}
+					      	{% if form.captcha.errors %}
+					      	<div class="help-block with-errors">{{ form.captcha.errors|join:", " }}</div>
+					      	{% endif %}
+					</div>
+				</div>
+		  	</div>
+
+			<div class="clearfix">&nbsp;</div>
+			<div class="col-md-3 col-md-offset-3">
+				<input type="submit" value="Signup" class="btn btn-primary btn-lg btn-block">
+			</div>
+			<div class="col-md-3">
+				<input type="reset" value="Reset" class="btn btn-primary btn-lg btn-block">
+			</div>
+			
+			
+		</form>
+	</div>
+</div>
+{% endblock body %}
