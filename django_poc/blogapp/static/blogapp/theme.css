@@ -1,0 +1,46 @@
+body {
+  padding-top: 70px;
+  padding-bottom: 30px;
+}
+
+.theme-dropdown .dropdown-menu {
+  position: static;
+  display: block;
+  margin-bottom: 20px;
+}
+
+.theme-showcase > p > .btn {
+  margin: 5px 0;
+}
+
+.theme-showcase .navbar .container {
+  width: auto;
+}
+
+.btn-orange {
+	background-color: #FBB202;
+	color: #FFF;
+	text-decoration: none;
+}
+
+.btn-orange:hover {
+	background-color: #265a88;
+	color: #FFF;
+	outline: none;
+}
+.no-text-decoration{
+	text-decoration: none !important;
+}
+
+.form-control {
+	margin: 10px 0px;
+}
+
+.custom-form div.from-group {
+	margin-left: auto;
+	margin-right: 0px;
+}
+
+div.jumbotron.pad-50 {
+	padding: 50px 0px;
+}
