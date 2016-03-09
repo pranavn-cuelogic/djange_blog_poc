@@ -26,7 +26,7 @@ class Comment(models.Model):
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User)
-    phone_number = models.IntegerField(null=True,)
+    phone_number = models.CharField(max_length=20, null=True,)
     address = models.TextField()
     about_me = models.TextField()
     activation_token = models.CharField(max_length=200,)

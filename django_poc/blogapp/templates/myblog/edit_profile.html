@@ -1,0 +1,72 @@
+{% extends 'wrapper.html' %}
+{% load static %}
+
+{% block body %}
+<div class="jumbotron pad-50">
+	<h1 align="center">Tweet Me Edit Profile!</h1>
+	<div class="container profile">
+		<form data-toggle="validator" role="form" action="" method="post" class="custom-form form-horizontal" name="editProfile" id="editProfile">{% csrf_token %}
+		<div class="form-group col-md-12">
+			<div class="row">
+				<div class="col-md-6">
+					<label class="control-label">First Name</label>
+					{{ form.first_name }}
+	    			{% if form.first_name.errors %}
+		    			<div class="help-block with-errors input-error">{{ form.first_name.errors|join:", " }}</div>
+		    		{% endif %}
+				</div>
+				<div class="col-md-6">
+					<label class="control-label">LastName:</label>
+					{{ form.last_name }}
+	    			{% if form.last_name.errors %}
+		    			<div class="help-block with-errors input-error">{{ form.last_name.errors|join:", " }}</div>
+		    		{% endif %}
+				</div>
+				<div class="col-md-6">
+					<label class="control-label">Email:</label>
+					{{ form.email }}
+	    			{% if form.email.errors %}
+		    			<div class="help-block with-errors input-error">{{ form.email.errors|join:", " }}</div>
+		    		{% endif %}
+				</div>
+				<div class="col-md-6">
+					<label class="control-label">Phone Number:</label>
+					{{ form.phone_number }}
+	    			{% if form.phone_number.errors %}
+		    			<div class="help-block with-errors input-error">{{ form.phone_number.errors|join:", " }}</div>
+		    		{% endif %}
+				</div>
+				<div class="col-md-6">
+					<label class="control-label vertical-align-top">Address:</label>
+					{{ form.address }}
+	    			{% if form.address.errors %}
+		    			<div class="help-block with-errors input-error">{{ form.address.errors|join:", " }}</div>
+		    		{% endif %}
+				</div>
+				<div class="col-md-6">
+					<label class="control-label vertical-align-top">About Me:</label>
+					{{ form.about_me }}
+	    			{% if form.about_me.errors %}
+		    			<div class="help-block with-errors input-error">{{ form.about_me.errors|join:", " }}</div>
+		    		{% endif %}
+				</div>
+				<div class="clearfix">&nbsp;</div>
+				<div class="pull-right">
+					<input type="submit" value="Update Profile" class="btn btn-primary btn-lg margin-left">
+				</div>
+				<div class="pull-right">
+					<a href="{% url 'reset-password' %}">
+						<input type="button" value="Change Password" class="btn btn-primary btn-lg margin-left">
+					</a>
+				</div>
+				<div class="pull-right">
+					<a href="{% url 'myblog:profile' %}">
+						<input type="button" value="Cancel" class="btn btn-primary btn-lg margin-left">
+					</a>
+				</div>
+	    	</div>
+	  	</div>
+	  </form>
+	</div>
+</div>
+{% endblock body %}

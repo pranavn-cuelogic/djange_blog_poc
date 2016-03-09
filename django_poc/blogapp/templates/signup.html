@@ -14,32 +14,32 @@
 					<div class="col-md-6">
 						{{ form.first_name }}
 		    			{% if form.first_name.errors %}
-			    			<div class="help-block with-errors">{{ form.first_name.errors|join:", " }}</div>
+			    			<div class="help-block with-errors input-error">{{ form.first_name.errors|join:", " }}</div>
 			    		{% endif %}
 					</div>
 					<div class="col-md-6">
 						{{ form.last_name }}
 		    			{% if form.last_name.errors %}
-			    			<div class="help-block with-errors">{{ form.last_name.errors|join:", " }}</div>
+			    			<div class="help-block with-errors input-error">{{ form.last_name.errors|join:", " }}</div>
 			    		{% endif %}
 					</div>
 					<div class="col-md-6">
 						{{ form.email }}
 				    	{% if form.email.errors %}
-				    	<div class="help-block error with-errors">{{ form.email.errors|join:", " }}</div>
+				    	<div class="help-block with-errors input-error">{{ form.email.errors|join:", " }}</div>
 				    	{% endif %}
 					</div>
 					<div class="clearfix">&nbsp;</div>
 					<div class="col-md-6">
 						{{ form.password }}
 				      	{% if form.password.errors %}
-				      	<div class="help-block with-errors">{{ form.password.errors|join:", " }}</div>
+				      	<div class="help-block with-errors input-error">{{ form.password.errors|join:", " }}</div>
 				      	{% endif %}
 					</div>
 					<div class="col-md-6">
 						{{ form.confirm_password }}
 				      	{% if form.confirm_password.errors %}
-				      	<div class="help-block with-errors">{{ form.confirm_password.errors|join:", " }}</div>
+				      	<div class="help-block with-errors input-error">{{ form.confirm_password.errors|join:", " }}</div>
 				      	{% endif %}
 					</div>
 		    	</div>
@@ -47,7 +47,7 @@
 			    	<div class="col-md-6">
 					      	{{ form.captcha }}
 					      	{% if form.captcha.errors %}
-					      	<div class="help-block with-errors">{{ form.captcha.errors|join:", " }}</div>
+					      	<div class="help-block with-errors input-error">{{ form.captcha.errors|join:", " }}</div>
 					      	{% endif %}
 					</div>
 				</div>

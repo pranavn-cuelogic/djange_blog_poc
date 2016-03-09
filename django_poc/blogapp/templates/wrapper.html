@@ -38,7 +38,7 @@
                  <ul class="nav navbar-nav navbar-right">
                     {% if user.is_authenticated %}
                     <li>
-                        <a href="{% url 'home' %}">{{ user.first_name }} {{ user.last_name }}</a>
+                        <a href="{% url 'myblog:profile' %}">{{ user.first_name }} {{ user.last_name }}</a>
                     </li>
                     <li>
                         <a href="{% url 'logout' %}">Logout</a>

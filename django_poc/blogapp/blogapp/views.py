@@ -2,12 +2,12 @@ from django.shortcuts import render, get_object_or_404
 from django.core.urlresolvers import reverse
 from django.contrib import messages
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, update_session_auth_hash
 from django.http import HttpResponseRedirect
 from django.core.mail import send_mail
 from django.conf import settings
 from django.template import Context, loader
-from blogapp.forms import SignupForm
+from blogapp.forms import UserForm, ChangePasswordForm
 import random, sha, re
 from django.contrib.auth.decorators import user_passes_test
 from myblog.models import UserProfile
@@ -18,13 +18,20 @@ from myblog.models import UserProfile
 def superuser_only(user):
     return (user.is_authenticated() and user.is_superuser)
 
+
 def home_view(request):
-    return render(request, 'home.html')
+    if request.user.id:
+        userprofile = UserProfile.objects.get(user_id=request.user.id)
+        user_dict = {'userprofile': userprofile}
+    else:
+        user_dict = {}
+    return render(request, 'home.html', user_dict)
+
 
 def signup_view(request):
 
     if request.method == 'POST':
-        form = SignupForm(request.POST)
+        form = UserForm(request.POST)
 
         if form.is_valid():
 
@@ -73,7 +80,7 @@ def signup_view(request):
                 messages.add_message(request, messages.INFO, success_message)
                 return HttpResponseRedirect(reverse('home'))
     else:
-        form = SignupForm()
+        form = UserForm()
 
     return render(request, 'signup.html', {'form': form})
 
@@ -101,3 +108,22 @@ def activate_user(request, activation_token):
 
     messages.add_message(request, messages.INFO, 'Token doesn\'t exist!')
     return HttpResponseRedirect(reverse('home'))
+
+def reset_password(request):
+    if request.method == 'POST':
+        form = ChangePasswordForm(user=request.user, data=request.POST)
+        users = request.user
+        users.set_password(request.POST.get('password', None))
+        if form.is_valid():
+            user_data = {
+                'password': users.password,
+            }
+            user_data = User.objects.filter(pk=request.user.id).update(**user_data)
+            update_session_auth_hash(request, form.user)
+            return HttpResponseRedirect('/myblog/profile')
+
+    else:
+
+        form = ChangePasswordForm(user=request.user)
+
+    return render(request, 'reset_password.html', {'form': form})

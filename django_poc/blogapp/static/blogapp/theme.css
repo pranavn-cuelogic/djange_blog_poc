@@ -44,3 +44,109 @@ body {
 div.jumbotron.pad-50 {
 	padding: 50px 0px;
 }
+
+.input-error {
+	color: #FF0000;
+}
+
+.profile{
+	padding:30px;
+}
+
+.vertical-align-top {
+	vertical-align: top;
+}
+
+/*.profile-pic {
+	width: 150px;
+	height: 150px;
+	border: 2px solid #888;
+}
+
+.media-left a span{
+	display:none;
+	color:#fff;
+	font-size: 14px;
+	float:none;
+	left:0;
+	right:0	;
+	text-align: center;
+}
+.media-left a:hover span{
+	display:block;
+}
+
+.profile-pic:hover {
+	opacity: 0.4;
+	background: #000;
+}*/
+.media-left a.upload-img{
+	position: relative;
+	display: inline-block;
+  height: 150px;
+  margin: 0 1em 1em 0;
+  position: relative;
+  width: 150px;
+}
+.media-left a.upload-img img.profile-pic{
+position: absolute;
+width: 150px;
+height: 150px;
+}
+
+.media-left a.upload-img span.img-text{
+  background: rgba(0,0,0,0.5);
+  color: white;
+  cursor: pointer;
+  display: table;
+  height: 150px;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 150px;
+  opacity: 0;
+  border-radius: 50%;
+}
+
+.media-left a.upload-img:hover span.img-text{
+ opacity: 1;
+}
+
+.media-left a.upload-img span.img-text span{
+  display: table-cell;
+  text-align: center;
+  vertical-align: middle;
+
+  }
+
+.profile-title {
+	font-size: 28px;
+    font-weight: bold;
+    color: #01B4CA;
+    padding-left: 15px;
+}
+
+.edit-icon {
+	color: #000;
+    line-height: 24px;
+    vertical-align: middle;
+}
+.profile .media label{
+line-height: 25px;
+}
+
+.pos-relative {
+	position:relative
+}
+
+.hide {
+	display: none;
+}
+
+.margin-left {
+	margin-left: 15px;
+}
+
+.margin-top50 {
+	margin-top: 50px;
+}

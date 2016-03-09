@@ -19,5 +19,8 @@ from myblog.views import *
 
 urlpatterns = patterns(
     '',
-    url(r'^profile/(?P<user_id>[-\w]+)/$', profile_view, name='profile'),
+    # url(r'^profile/(?P<user_id>[-\w]+)/$', profile_view, name='profile'),
+    url(r'^profile/$', profile_view, name='profile'),
+    url(r'^edit-profile/$', edit_profile, name='edit-profile'),
+    url(r'^upload-pic/$', upload_pic, name='upload-pic'),
 )
