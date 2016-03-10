@@ -41,6 +41,9 @@
                         <a href="{% url 'myblog:profile' %}">{{ user.first_name }} {{ user.last_name }}</a>
                     </li>
                     <li>
+                        <a href="{% url 'myblog:add-post' %}">Add Post</a>
+                    </li>
+                    <li>
                         <a href="{% url 'logout' %}">Logout</a>
                     </li>
                     {% else %}

@@ -19,6 +19,10 @@ def superuser_only(user):
     return (user.is_authenticated() and user.is_superuser)
 
 
+def user_only(user):
+    return (user.is_authenticated())
+
+
 def home_view(request):
     if request.user.id:
         userprofile = UserProfile.objects.get(user_id=request.user.id)
@@ -109,6 +113,8 @@ def activate_user(request, activation_token):
     messages.add_message(request, messages.INFO, 'Token doesn\'t exist!')
     return HttpResponseRedirect(reverse('home'))
 
+
+@user_passes_test(user_only, login_url='login')
 def reset_password(request):
     if request.method == 'POST':
         form = ChangePasswordForm(user=request.user, data=request.POST)

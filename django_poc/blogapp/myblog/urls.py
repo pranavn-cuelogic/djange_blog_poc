@@ -23,4 +23,7 @@ urlpatterns = patterns(
     url(r'^profile/$', profile_view, name='profile'),
     url(r'^edit-profile/$', edit_profile, name='edit-profile'),
     url(r'^upload-pic/$', upload_pic, name='upload-pic'),
+    url(r'^add-post/$', add_post, name='add-post'),
+    url(r'^edit-post/(?P<post_id>[-\w]+)/$', edit_post, name='edit-post'),
+
 )

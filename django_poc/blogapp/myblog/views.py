@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.core.urlresolvers import reverse
 from django.contrib import messages
+from django.utils.text import slugify
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 from django.http import HttpResponseRedirect
@@ -9,10 +10,10 @@ from django.conf import settings
 from django.template import Context, loader
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
-from blogapp.forms import UserProfileForm, UploadUserPicForm
-import random, sha, re, os, shutil
+from blogapp.forms import UserProfileForm, UploadUserPicForm, PostForm
+import random, sha, re, os
 from django.contrib.auth.decorators import user_passes_test
-from myblog.models import UserProfile
+from myblog.models import UserProfile, Post
 
 
 # Create your views here.
@@ -21,11 +22,19 @@ def superuser_only(user):
     return (user.is_authenticated() and user.is_superuser)
 
 
-# @user_passes_test(superuser_only, login_url='login')
+def user_only(user):
+    return (user.is_authenticated())
+
+
+@user_passes_test(user_only, login_url='login')
 def profile_view(request):
     userProfile = UserProfile.objects.get(user_id=request.user.id)
+    if not userProfile.photo:
+        userProfile.photo = 'default.png'
     return render(request, 'myblog/profile.html', {'userProfile': userProfile})
 
+
+@user_passes_test(user_only, login_url='login')
 def edit_profile(request):
 
     if request.method == 'POST':
@@ -84,3 +93,68 @@ def upload_pic(request):
     else:
         form = UploadUserPicForm()
     return HttpResponseRedirect('/myblog/profile')
+
+
+def add_post(request):
+
+    if request.method == 'POST':
+        form = PostForm(request.POST)
+
+        if form.is_valid():
+            user = User.objects.get(id=request.user.id)
+            blog_post = Post()
+            blog_post.title = request.POST.get('title', None)
+            blog_post.content = request.POST.get('body', None)
+            blog_post.tags = request.POST.get('tags', None)
+            blog_post.status = request.POST.get('status', None)
+            blog_post.rating = 0
+            blog_post.slug = slugify(request.POST.get('title', None))
+            blog_post.userid = user
+            blog_post.save()
+
+            success_message = "Post added successfully"
+
+            messages.add_message(request, messages.INFO, success_message)
+            return HttpResponseRedirect(reverse('home'))
+    else:
+        form = PostForm()
+
+    return render(request, 'myblog/add_post.html', {'form': form})
+
+
+def edit_post(request):
+    id = request.GET.get('id', None)
+
+    if id is not None:
+        post = get_object_or_404(Post, id=id)
+    else:
+        post = None
+
+    postdata = {'title': post.title,
+                'body': post.content,
+                'tags': post.tags,
+                'status': post.status}
+
+    if request.method == 'POST':
+        postform = PostForm(request.POST)
+
+        if postform.is_valid:
+
+            post_dict = {
+                'title': request.POST.get('title', None),
+                'content': request.POST.get('body', None),
+                'tags': request.POST.get('tags', None),
+                'status': request.POST.get('tags', None),
+            }
+
+            Post.objects.filter(id=id).update(**post_dict)
+
+            success_message = "Post updated successfully"
+
+            messages.add_message(request, messages.INFO, success_message)
+            return HttpResponseRedirect(reverse('home'))
+
+    else:
+        postform = PostForm(initial=postdata)
+
+    return render(request, 'myblog/edit_post.html', {'form': postform})
