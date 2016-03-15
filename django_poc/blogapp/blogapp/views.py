@@ -2,15 +2,18 @@ from django.shortcuts import render, get_object_or_404
 from django.core.urlresolvers import reverse
 from django.contrib import messages
 from django.contrib.auth.models import User
+from django.db.models import Q
 from django.contrib.auth import authenticate, login, update_session_auth_hash
 from django.http import HttpResponseRedirect
 from django.core.mail import send_mail
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.conf import settings
 from django.template import Context, loader
 from blogapp.forms import UserForm, ChangePasswordForm
-import random, sha, re
+from django.views.decorators.csrf import csrf_exempt
+import random, sha, re, datetime
 from django.contrib.auth.decorators import user_passes_test
-from myblog.models import UserProfile
+from myblog.models import UserProfile, Post
 
 
 # Create your views here.
@@ -23,12 +26,67 @@ def user_only(user):
     return (user.is_authenticated())
 
 
+@csrf_exempt
 def home_view(request):
+
+    searchType = request.POST.get('search_type', None) if request.POST.get('search_type', None) else ''
+    searchText = request.POST.get('search_text', None) if request.POST.get('search_text', None) else ''
+
+    from_date = request.POST.get('from_date', None) + ' 00:00:00' if request.POST.get('from_date', None) else ''
+    to_date = request.POST.get('to_date', None) + ' 23:59:59' if request.POST.get('to_date', None) else ''
+
+    if searchType:
+        if searchType == "author":
+            allUserData = User.objects.filter(Q(first_name__icontains=searchText) | Q(last_name__icontains=searchText), is_active=1)
+            user_ids = []
+            for user in allUserData:
+                user_ids.append(user.id)
+            allPost = Post.objects.filter(status='publish', userid_id__in=user_ids).order_by('-created')
+        else:
+            if not searchType == "date":
+                searchField = str(searchType) + str('__icontains')
+                allPost = Post.objects.filter(status='publish', **{searchField: searchText}).order_by('-created')
+            else:
+                allPost = Post.objects.filter(status='publish', created__range=(from_date, to_date)).order_by('-created')
+    else:
+        allPost = Post.objects.filter(status='publish').order_by('-created')
+
+    paginator = Paginator(allPost, 10)
+    page = request.GET.get('page')
+
+    try:
+        post_data = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        post_data = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        post_data = paginator.page(paginator.num_pages)
+
+    user_blog_data_list = []
+    for each in post_data:
+        user_blog_data = {}
+        try:
+            user_blog_data['post_info'] = each
+            user_blog_data['user_obj'] = User.objects.get(id=each.userid.id)
+            user_blog_data['user_profile'] = UserProfile.objects.get(user_id=each.userid.id)
+        except:
+            return "Object does not exist"
+        user_blog_data_list.append(user_blog_data)
     if request.user.id:
         userprofile = UserProfile.objects.get(user_id=request.user.id)
-        user_dict = {'userprofile': userprofile}
     else:
-        user_dict = {}
+        userprofile = None
+
+    user_dict = {
+        'userprofile': userprofile,
+        'blog_post': user_blog_data_list,
+        'paginate_data': post_data,
+        'search_text': searchText,
+        'search_type': searchType,
+        'from_date': request.POST.get('from_date'),
+        'to_date': request.POST.get('to_date')
+    }
     return render(request, 'home.html', user_dict)
 
 

@@ -24,6 +24,9 @@ urlpatterns = patterns(
     url(r'^edit-profile/$', edit_profile, name='edit-profile'),
     url(r'^upload-pic/$', upload_pic, name='upload-pic'),
     url(r'^add-post/$', add_post, name='add-post'),
-    url(r'^edit-post/(?P<post_id>[-\w]+)/$', edit_post, name='edit-post'),
-
+    url(r'^edit-post/$', edit_post, name='edit-post'),
+    url(r'^my-blog/$', my_blog, name='my-blog'),
+    url(r'^user-comment/$', user_comment, name='user-comment'),
+    url(r'^delete-comment/$', delete_comment, name='delete-comment'),
+    url(r'^(?P<post_slug>[-\w]+)/$', view_post, name='view-post'),
 )

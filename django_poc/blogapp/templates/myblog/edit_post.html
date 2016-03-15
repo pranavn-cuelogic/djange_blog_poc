@@ -47,9 +47,13 @@
 	    		<div class="help-block with-errors">{{ form.status.errors|join:", " }}</div>
 	    		{% endif %}
 		  	</div>
-		  
+		  	
 		  	<div class="form-group col-md-12">
-		    	<button type="submit" class="btn btn-primary">Post</button>
+		    	<button type="submit" class="btn btn-primary">Save</button>
+		    	<a href="{% url 'myblog:my-blog' %}">
+		    		<button type="button" class="btn btn-primary">Cancel</button>
+		    	</a>
+		    	
 		    </div>
 		</form>
 

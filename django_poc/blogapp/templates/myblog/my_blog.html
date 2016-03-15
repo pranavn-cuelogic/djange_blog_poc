@@ -1,0 +1,49 @@
+{% extends 'wrapper.html' %}
+{% load static %}
+
+{% block body %}
+<div class="jumbotron">
+	<div class="container" style="padding-top:10px">
+		<div class="row">
+			<div class="col-md-10 col-md-offset-1 blog-wrapper">
+				{% if blog_data %}
+					{% for each in blog_data %}
+					<div class="blogs">
+						<div class="media">
+							<div class="media-body display">
+							</div>
+						</div>
+						<div class="clearfix">&nbsp;</div>
+						<div class=" blog col-md-10 col-md-offset-1">
+							<div class="tags">
+								{{each.tags}}
+							</div>
+							<div class="title">
+		    					<h3 class="page-header">
+		    						<a href="/myblog/{{each.slug}}">{{each.title}}</a>
+		    						<a href="{% url 'myblog:edit-post' %}?id={{each.id}}"><i class="glyphicon glyphicon-edit edit-title"></i></a>
+		    					</h3>
+
+		    				</div>
+		    				<div class="content">
+								{{each.content|slice:"0:200"}}...
+							</div>
+							<div class="read-more pull-right col-md-offset-2">
+								<a href="/myblog/{{each.slug}}">
+									<button class="btn btn-primary read-more">Read more...</button>
+								</a>
+							</div>
+						</div>
+					</div>
+					<div class="clearfix blog-spacing">&nbsp;</div>
+					{% endfor %}
+				{% else %}
+					<div class="alert alert-warning" align="center">
+						<h3>No Post Yet!</h3>
+					</div>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock body %}
