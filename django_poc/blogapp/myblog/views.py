@@ -16,6 +16,8 @@ import random, sha, re, os
 from django.contrib.auth.decorators import user_passes_test
 from django.template.loader import render_to_string
 from myblog.models import UserProfile, Post, Comment
+import nltk
+from nltk.tag import pos_tag, map_tag
 
 
 # Create your views here.
@@ -27,6 +29,12 @@ def superuser_only(user):
 def user_only(user):
     return (user.is_authenticated())
 
+
+def get_tags(content):
+    text = nltk.word_tokenize(content)
+    post_tagged = pos_tag(text)
+    get_tags = [(word, map_tag('en-ptb', 'universal', tag)) for word, tag in post_tagged]
+    return get_tags
 
 @user_passes_test(user_only, login_url='login')
 def profile_view(request):
@@ -175,6 +183,7 @@ def view_post(request, **kwargs):
     if post:
 
         blog_data['post_info'] = post
+        blog_data['post_info'].tags = get_tags(post.content)
         blog_data['comments_count'] = Comment.objects.filter(postid_id=post.id).count()
         blog_data['user_obj'] = User.objects.get(id=post.userid.id)
         blog_data['user_profile'] = UserProfile.objects.get(user_id=post.userid.id)

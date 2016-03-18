@@ -2,9 +2,10 @@ from django.shortcuts import render, get_object_or_404
 from django.core.urlresolvers import reverse
 from django.contrib import messages
 from django.contrib.auth.models import User
+from django.contrib.auth.views import login
 from django.db.models import Q
 from django.contrib.auth import authenticate, login, update_session_auth_hash
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.core.mail import send_mail
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.conf import settings
@@ -14,7 +15,8 @@ from django.views.decorators.csrf import csrf_exempt
 import random, sha, re, datetime
 from django.contrib.auth.decorators import user_passes_test
 from myblog.models import UserProfile, Post
-
+import nltk
+from nltk.tag import pos_tag, map_tag
 
 # Create your views here.
 
@@ -24,6 +26,13 @@ def superuser_only(user):
 
 def user_only(user):
     return (user.is_authenticated())
+
+
+def get_tags(content):
+    text = nltk.word_tokenize(content)
+    post_tagged = pos_tag(text)
+    get_tags = [(word, map_tag('en-ptb', 'universal', tag)) for word, tag in post_tagged]
+    return get_tags
 
 
 @csrf_exempt
@@ -68,10 +77,11 @@ def home_view(request):
         user_blog_data = {}
         try:
             user_blog_data['post_info'] = each
+            user_blog_data['post_info'].tags = get_tags(each.content)
             user_blog_data['user_obj'] = User.objects.get(id=each.userid.id)
             user_blog_data['user_profile'] = UserProfile.objects.get(user_id=each.userid.id)
         except:
-            return "Object does not exist"
+            return render(request, 'home.html', 'Error : Object does not exist')
         user_blog_data_list.append(user_blog_data)
     if request.user.id:
         userprofile = UserProfile.objects.get(user_id=request.user.id)
@@ -90,7 +100,17 @@ def home_view(request):
     return render(request, 'home.html', user_dict)
 
 
+def custom_login(request):
+    if request.user.is_authenticated():
+        return HttpResponseRedirect(reverse('home'))
+    else:
+        return login(request)
+
+
 def signup_view(request):
+
+    if request.user.is_authenticated():
+        return HttpResponseRedirect(reverse('home'))
 
     if request.method == 'POST':
         form = UserForm(request.POST)
@@ -191,3 +211,34 @@ def reset_password(request):
         form = ChangePasswordForm(user=request.user)
 
     return render(request, 'reset_password.html', {'form': form})
+
+
+@csrf_exempt
+def facebook_login_success(request):
+    if request.method == 'POST':
+        fb_user_id = request.POST.get('id')
+        try:
+            user_profile = UserProfile.objects.get(social_media_key=fb_user_id)
+            user_data = User.objects.get(pk=user_profile.user_id)
+            login(request, user_data)
+
+        except:
+            user_name = request.POST.get('name').split(' ')
+            first_name = user_name[0]
+            last_name = user_name[1]
+
+            user_obj = User()
+            user_obj.first_name = first_name
+            user_obj.last_name = last_name
+            user_obj.is_active = 1
+            user_obj.save()
+
+            userprofile = UserProfile()
+            userprofile.user_id = user_obj.id
+            userprofile.social_media_key = fb_user_id
+
+            userprofile.save()
+            login(request, user_obj)
+
+        if request.is_ajax():
+            return HttpResponse('true')

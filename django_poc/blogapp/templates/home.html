@@ -66,7 +66,11 @@
 
 						<div class=" blog col-md-11 col-md-offset-1">
 							<div class="tags">
-								{{each.post_info.tags}}
+								{% for tag in each.post_info.tags %}
+									{% if tag.1 == 'NOUN' %}
+										<a href="/myblog/content/{{ tag.0 }}/">#{{tag.0}}</a>
+									{% endif %}
+								{% endfor %}
 							</div>
 							<div class="title">
 		    					<h3 class="page-header"><a href="/myblog/{{each.post_info.slug}}">{{each.post_info.title}}</a></h3>

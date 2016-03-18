@@ -26,6 +26,9 @@ urlpatterns = patterns(
     url(r'^captcha/', include('captcha.urls')),
     url(r'^logout/$', 'django.contrib.auth.views.logout', {'next_page': 'home'}, name='logout'),
     url(r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'login.html'}, name="login"),
+    # url(r'^login/$', custom_login, name='login'),
     url(r'^reset-password/', reset_password, name='reset-password'),
+    # url(r'^facebook-login/', facebook_login_success, name='facebook-login'),
     url(r'^myblog/', include('myblog.urls', namespace='myblog')),
+
 )

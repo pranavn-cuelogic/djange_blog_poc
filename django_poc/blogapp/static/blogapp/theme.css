@@ -28,6 +28,19 @@ body {
 	color: #FFF;
 	outline: none;
 }
+
+.btn-red {
+	background-color: #d73d32;
+	color: #FFF;
+	text-decoration: none;
+}
+
+.btn-red:hover {
+	background-color: #666;
+	color: #FFF;
+	outline: none;
+}
+
 .no-text-decoration{
 	text-decoration: none !important;
 }
@@ -161,6 +174,10 @@ height: 50px;
 	color: #3b5998;
 }
 
+.blog div.tags a {
+	text-decoration: none;
+}
+
 .read-more{
 	margin: 20px 0 0 20px;
 
@@ -247,6 +264,10 @@ seperator {
 	font-size: 12px;
 	font-weight: bold;
 	font-style: italic;
+}
+
+.user-blog-tags a{
+	text-decoration: none;
 }
 
 .search-bar-wrapper {
@@ -348,4 +369,15 @@ seperator {
 del span.loader .del-loader {
 	height: 20px;
 	width: 20px;
+}
+
+.or-text {
+    text-align: center;
+    margin-top: 30px;
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.margin-left25 {
+	margin-left: 25%;
 }
