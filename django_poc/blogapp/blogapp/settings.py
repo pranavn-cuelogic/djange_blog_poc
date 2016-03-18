@@ -137,6 +137,8 @@ STATICFILES_DIRS = (
 LOGIN_REDIRECT_URL = "/"
 AUTH_PROFILE_MODULE = 'blogpost.Users'
 USER_IMAGE_PATH = os.path.join(BASE_DIR, "static/blogapp/user_profile_img/")
+USER_IMAGE_VIEW_PATH = "/static/blogapp/user_profile_img/"
+
 
 # Email SMTP Details
 SITE_URL = '127.0.0.1:8000'

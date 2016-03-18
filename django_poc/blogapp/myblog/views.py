@@ -40,7 +40,7 @@ def get_tags(content):
 def profile_view(request):
     userProfile = UserProfile.objects.get(user_id=request.user.id)
     if not userProfile.photo:
-        userProfile.photo = 'default.png'
+        userProfile.photo = settings.USER_IMAGE_VIEW_PATH + 'default.png'
     return render(request, 'myblog/profile.html', {'userProfile': userProfile})
 
 
@@ -95,7 +95,7 @@ def upload_pic(request):
         if files:
             path = default_storage.save(settings.USER_IMAGE_PATH + str(files.name), ContentFile(files.read()))
             tmp_file_path = os.path.join(settings.USER_IMAGE_PATH, path)
-            photo = files.name
+            photo = settings.USER_IMAGE_VIEW_PATH + files.name
             UserProfile.objects.filter(user_id=request.user.id).update(photo=photo)
         else:
             success_message = "Something has went wrong, please try again."
@@ -199,12 +199,12 @@ def view_post(request, **kwargs):
             user_comment_data['user_profile'] = UserProfile.objects.get(user_id=each.userid.id)
 
             if not user_comment_data['user_profile'].photo:
-                user_comment_data['user_profile'] = 'default.png'
+                user_comment_data['user_profile'] = settings.USER_IMAGE_VIEW_PATH + 'default.png'
 
             user_comments_list.append(user_comment_data)
 
     if not blog_data['user_profile'].photo:
-        blog_data['user_profile'].photo = 'default.png'
+        blog_data['user_profile'].photo = settings.USER_IMAGE_VIEW_PATH + 'default.png'
     blog_info = {'blog_data': blog_data, 'comments': user_comments_list}
     return render(request, 'myblog/view_post.html', blog_info)
 
@@ -238,7 +238,7 @@ def user_comment(request):
         comment_obj['current_user'] = request.user
 
         if not comment_obj['user_profile'].photo:
-            comment_obj['user_profile'].photo = 'default.png'
+            comment_obj['user_profile'].photo = settings.USER_IMAGE_VIEW_PATH + 'default.png'
 
         if not request.user.id == comment_obj['user_obj'].id:
 
