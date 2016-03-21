@@ -1,0 +1,91 @@
+{% load staticfiles %}
+<!DOCTYPE HTML>
+<html lang='en'>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-COMPATIBLE" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>{% block title %} Tweet Me - Independence To Tweet{% endblock title %}</title>
+    {% block stylesheets %}
+    <link rel="stylesheet" href="{% static 'blogapp/bootstrap.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'blogapp/bootstrap-theme.min.css' %}">
+    <link rel="stylesheet" href="{% static 'blogapp/jquery-ui.css' %}" />
+    <link rel="stylesheet" href="{% static 'blogapp/theme.css' %}" />
+    {% endblock stylesheets %}
+
+    {% block scriptload %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js">
+    </script>
+    <script src="{% static 'blogapp/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'blogapp/js/jquery-ui.js' %}"></script>
+    <script src="{% static 'blogapp/js/docs.min.js' %}"></script>
+    <script src="http://connect.facebook.net/en_US/all.js"></script>
+    <script src="{% static 'blogapp/js/facebook.js' %}"></script>
+    {% endblock scriptload %}
+</head>
+
+<body role="document">
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="{% url 'home' %}">Home</a>
+            </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                 <ul class="nav navbar-nav navbar-right">
+                    {% if user.is_authenticated %}
+                    <li>
+                        <a href="{% url 'myblog:profile' %}">{{ user.first_name }} {{ user.last_name }}</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'myblog:add-post' %}">Add Post</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'logout' %}">Logout</a>
+                    </li>
+                    {% else %}
+                    <li>
+                        <a href="{% url 'login' %}">Login</a>
+                    </li>
+                     <li>
+                        <a href="{% url 'signup' %}">Signup</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    {% if messages %}
+    <div class="container">
+        <ul class="messages">
+        {% for message in messages %}
+        <li id="message_{{ forloop.counter }}"
+            {% if message.tags %} class="alert alert-{{message.tags}}"{% endif %}>
+            {{ message }}
+        </li>
+        {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+
+    <div class="container theme-showcase" role="main">
+        {% block body %}
+        {% endblock body %}
+    </div>
+    <hr>
+    {% block footer %}
+    <div class="container marketing">
+    <footer>
+        <p class="pull-right"><a href="#">Back to Top</a></p>
+    </footer>
+    </div>
+    {% endblock footer %}
+</body>
+</html>

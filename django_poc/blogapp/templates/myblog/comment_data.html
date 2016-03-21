@@ -1,0 +1,24 @@
+<li class="user-comments">
+	<div class="media">
+	 	<div class="media-left">
+		    <a href="#">
+		    	<img class="media-object user-pic" src="/static/blogapp/user_profile_img/{{comment_obj.user_profile.photo}}" alt="{{ comment_obj.user_obj.first_name }}">
+		    </a>
+		</div>
+		<div class="media-body">
+		    <h4 class="media-heading">{{comment_obj.user_obj.first_name}} {{comment_obj.user_obj.last_name}} <span class="content-para">{{comment_obj.comment.comment}}</span> 
+		    {% if comment_obj.current_user.id == comment_obj.user_obj.id %}
+			    <del>
+			    	<i class="glyphicon glyphicon-trash delete" comment_id="{{comment_obj.comment.id}}" id="{{comment_obj.comment.id}}"></i>
+			    	<span class="loader hide">
+						<img class="media-object del-loader" src="/static/blogapp/images/loader.gif" alt="loader">
+					</span>
+			    </del>
+		    {% endif %}
+			</h4>
+		    <p class="comment-tag">
+		    	<tag>commented on</tag> <i class="glyphicon glyphicon-calendar"></i> {{comment_obj.comment.created|date:'M d, Y'}}
+		    </p>
+		</div>
+	</div>
+</li>

@@ -1,0 +1,3 @@
+{% load humanize %}
+<p>Hello <strong>{{ user_name }}</strong>,</p>
+<p>Thank you for signing up with <strong>TWEET ME</strong> using this email address. You are just one step away from your account, <a href="{{ site_url }}activate/{{ activation_key }}/">click here</a> to activate your account & enjoy the TWEETING....</p>

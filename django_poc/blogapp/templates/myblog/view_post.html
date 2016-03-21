@@ -1,0 +1,164 @@
+{% extends 'wrapper.html' %}
+{% load static %}
+
+{% block body %}
+<div class="jumbotron">
+	<div class="container" style="padding-top:10px">
+		<div class="row">
+			<div class="col-md-12">
+				{% if blog_data %}
+					<div class="col-md-9 blog-content">
+						<h3 class="user-blog-title">{{blog_data.post_info.title}}</h3>
+						<div class="user-blog-tags">
+							{% for tag in blog_data.post_info.tags %}
+								{% if tag.1 == 'NOUN' %}
+									<a href="/myblog/content/{{ tag.0 }}/">#{{tag.0}}</a>
+								{% endif %}
+							{% endfor %}
+						</div>
+						<div class="user-blog-body">
+							{{blog_data.post_info.content|linebreaks}}
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="author">
+							<h4 class="user-blog">Author</h4>
+							<span class="author-img">
+								<img class="media-object author-pic" src="/static/blogapp/user_profile_img/{{blog_data.user_profile.photo}}" alt="{{ blog_data.user_obj.first_name }}">
+							</span>
+							<span class="author-name">
+								{{blog_data.user_obj.first_name}} {{blog_data.user_obj.last_name}}
+							</span>
+							<div class="author-details">
+								<strong>Email:</strong> {{blog_data.user_obj.email}}
+								<strong>Phone no:</strong> {% if blog_data.user_profile.phone_number %} {{blog_data.user_profile.phone_number}} {% else %} --- {% endif %}
+								<!-- <strong>About:</strong> {% if blog_data.user_profile.about_me %} {{blog_data.user_profile.about_me}} {% else %} --- {% endif %} -->
+							</div>
+						</div>
+					</div>
+					<div class="clearfix"></div>
+					<div class="col-md-9 comment">
+						<h4 class="comment-title">
+							<strong class="cmnt-count">
+								{{blog_data.comments_count}}
+							</strong> 
+							Comments
+						</h4>
+						<ul class="user-comments-ul">
+						{% if comments %}
+							{% for each in comments %}
+								<li class="user-comments">
+									<div class="media">
+									 	<div class="media-left">
+										    <a href="#">
+										    	<img class="media-object user-pic" src="/static/blogapp/user_profile_img/{{each.user_profile.photo}}" alt="{{ each.user_obj.first_name }}">
+										    </a>
+										</div>
+										<div class="media-body">
+										    <h4 class="media-heading">{{each.user_obj.first_name}} {{each.user_obj.last_name}} <span class="content-para">{{each.comment.comment}}</span> 
+										    {% if request.user.id == each.user_obj.id %}
+											    <del>
+											    	<i class="glyphicon glyphicon-trash delete" comment_id="{{each.comment.id}}" id="{{each.comment.id}}"></i>
+											    	<span class="loader hide">
+														<img class="media-object del-loader" src="/static/blogapp/images/loader.gif" alt="loader">
+													</span>
+											    </del>
+										    {% endif %}
+											</h4>
+										    <p class="comment-tag">
+										    	<tag>commented on</tag> <i class="glyphicon glyphicon-calendar"></i> {{each.comment.created|date:'M d, Y'}}
+										    </p>
+										</div>
+									</div>
+								</li>
+							{% endfor %}
+						{% else %}
+							<div class="no-comments">
+								No Comments Yet!
+							</div>
+						{% endif %}
+						</ul>
+						<div class="new-comment">
+							<label class="col-md-10">
+								<input type="text" placeholder="{{request.user.first_name}} write your comment..." name="user_comment" id="user_comment" class="form-control" required>
+							</label>
+							<label class="post-btn">
+								<button class="btn btn-primary" id="post_comment">Post</button>
+							</label>
+							<label class="loader hide">
+								<img class="media-object loader-img" src="/static/blogapp/images/loader.gif" alt="loader">
+							</label>
+						</div>
+					</div>
+
+				{% else %}
+					<div class="alert alert-warning" align="center">
+						<h3>No Post Yet!</h3>
+					</div>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+$(document).ready(function() {
+  
+	$('#post_comment').on('click', function() {
+		var comment = $('#user_comment').val();
+		var post_id = '{{blog_data.post_info.id}}';
+		var slug = '{{blog_data.post_info.slug}}'
+		if(comment == '') {
+			alert('Please enter your comment!');
+		} else {
+			$('label.post-btn').addClass('hide');
+			$('label.loader').removeClass('hide');
+			$.ajax({
+				url: '/myblog/user-comment/',
+				type: 'post',
+				data: {'comment': comment, 'post_id': post_id, 'slug': slug},
+				success: function(data) {
+					$('div.no-comments').addClass('hide');
+					$('label.post-btn').removeClass('hide');
+					$('label.loader').addClass('hide');
+					comment_count = $('.cmnt-count').text();
+					if(comment_count != '') {
+						var count = parseInt(comment_count) + 1;
+					}
+					$('.cmnt-count').text(count);
+					$('.user-comments-ul').append(data);
+					$("input[type='text']").val('');
+				}
+			});
+		}
+	});
+
+	$(document).on('click', '.delete', function() {
+		var res = confirm('The comment will no longer! Are you sure?');
+		if(res) {
+			var comment_id = $(this).attr('comment_id');
+			$(this).addClass('hide');
+			$(this).next('span.loader').removeClass('hide');
+			$.ajax({
+				url: '/myblog/delete-comment/',
+				type: 'post',
+				data: {'comment_id': comment_id},
+				success: function(data) {
+					$('#'+comment_id).closest('li').remove();
+					comment_count = $('.cmnt-count').text();
+					if(comment_count != '' && comment_count >= '1') {
+						var count = parseInt(comment_count) - 1;
+					}
+					$('.cmnt-count').text(count);
+				}
+			});
+		}
+	});
+	
+
+}); //end of document ready
+
+</script>
+
+
+{% endblock body %}

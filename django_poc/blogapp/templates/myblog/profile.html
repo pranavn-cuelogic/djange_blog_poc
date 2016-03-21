@@ -1,0 +1,75 @@
+{% extends 'wrapper.html' %}
+{% load static %}
+
+{% block body %}
+<div class="jumbotron pad-50">
+	<h1 align="center">Tweet Me User Profile!</h1>
+	<div class="container profile">
+		<div class="form-group col-md-offset-3">
+			<div class="row">
+
+				<!--new code-->
+				<div class="media">
+					<div class="media-left">
+						<form data-toggle="validator" role="form" action="/myblog/upload-pic/" method="post" enctype="multipart/form-data" class="custom-form form-horizontal" name="updatePic" id="updatePic">{% csrf_token %}
+							<a href="javascript:void(0);" class="pos-relative upload-img">
+							<img class="media-object profile-pic img-circle" src="{{userProfile.photo}}" alt="{{ user.first_name }}">
+							<span class="img-text"><span><strong>Upload Pic</strong></span></span>
+							</a>
+							<input id="file-input" type="file" name="user_pic" class="hide"/>
+						</form>
+					</div>
+					<div class="media-body">
+						<h4 class="media-heading profile-title">
+							{{ user.first_name }} {{ user.last_name }}
+							<a href="{% url 'myblog:edit-profile' %}"><i class="glyphicon glyphicon-edit edit-icon"></i></a>
+						</h4>
+						<div class="col-md-12">
+							<label>Email:</label>
+							{{ user.email }}
+						</div>
+						<div class="col-md-12">
+							<label>Address:</label>
+							{{ userProfile.address }}
+						</div>
+						<div class="col-md-12">
+							<label>Phone Number:</label>
+							{{ userProfile.phone_number }}
+						</div>
+						<div class="col-md-12">
+							<label>About Me:</label>
+							{{ userProfile.about_me }}
+						</div>
+					</div>
+				</div>
+				<!--end new code-->
+	    	</div>
+	  	</div>
+	</div>
+</div>
+
+
+
+  <!-- ================== BEGIN PAGE LEVEL JS ================== -->
+  <!-- <script src="{% static "js/profile.js" %}"></script> -->
+  <!-- ================== END PAGE LEVEL JS ================== -->
+  <script>
+  $(document).ready(function() {
+    
+  	$('.upload-img').on('click', function() {
+  		$('#file-input').trigger('click');
+  	});
+  	$('#file-input').on('change', function() {
+       	var fileExtension = ['jpeg', 'jpg', 'png', 'gif', 'bmp'];
+       	if ($.inArray($(this).val().split('.').pop().toLowerCase(), fileExtension) == -1) {
+            alert("Only formats are allowed : "+fileExtension.join(', '));
+            return false;
+        } else {
+        	$('#updatePic').submit();
+        }
+  	});
+
+  }); //end of document ready
+
+  </script>
+{% endblock body %}

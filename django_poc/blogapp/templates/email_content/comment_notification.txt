@@ -1,0 +1,6 @@
+{% load humanize %}
+<p>Hello <strong>{{ user_name }}</strong>,</p>
+<p>{{guest_name}} has just commented on your post.</p> 
+<p><strong>Comment:</strong> {{comment}} </p>
+
+<p>To view the all post comment history please <a href="{{post_url}}">click here</a>.</p>
