@@ -47,6 +47,7 @@ INSTALLED_APPS = [
 MIDDLEWARE_CLASSES = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -68,6 +69,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.i18n',
             ],
         },
     },
@@ -124,6 +126,12 @@ USE_L10N = True
 USE_TZ = True
 
 
+# Path to the locale folder to fetch locales
+LOCALE_PATHS = (
+    os.path.join(BASE_DIR, 'locale'),
+)
+
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
@@ -137,6 +145,8 @@ STATICFILES_DIRS = (
 LOGIN_REDIRECT_URL = "/"
 AUTH_PROFILE_MODULE = 'blogpost.Users'
 USER_IMAGE_PATH = os.path.join(BASE_DIR, "static/blogapp/user_profile_img/")
+USER_IMAGE_VIEW_PATH = "/static/blogapp/user_profile_img/"
+
 
 # Email SMTP Details
 SITE_URL = '127.0.0.1:8000'
@@ -147,3 +157,7 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
 SITE_ID = 4
+
+# Facebook related Settings
+FACEBOOK_APP_ID = '488339124689695'
+FACEBOOK_SECRET_KEY = '7498f50c11ae6d120403e33840c31b06'

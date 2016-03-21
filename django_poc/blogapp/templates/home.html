@@ -1,15 +1,179 @@
 {% extends 'wrapper.html' %}
 {% load static %}
-
+{% load i18n %}
 {% block body %}
 <div class="jumbotron">
-	<h1 align="center">Tweet Me is here!</h1>
 	<div class="container" style="padding-top:10px">
 		<div class="row">
-			<div class="col-md-12">
-				Welcome to Tweet Me..!!
+			<div class="col-md-11 add-post-wrapper">
+				<div class="col-md-10 col-md-offset-3">
+					<div class="post-icon">
+						<a href="{% url 'myblog:add-post' %}"><i class="glyphicon glyphicon-pencil"></i> {% trans 'Add Post'%}</a> <seperator>|</seperator>
+						<a href="javascript:void(0);"><i class="glyphicon glyphicon-picture"></i> Add Photos/Video</a> <seperator>|</seperator>
+						<a href="{% url 'myblog:my-blog' %}">
+							<i class="glyphicon glyphicon-book"></i> My Blogs
+						</a>
+					</div>
+
+				</div>
 			</div>
+
+			<div class="col-md-11 search-bar-wrapper">
+				<div class="col-md-12">
+					<form role="search" data-toggle="validator" role="form" method="post" class="search-form" action="" id="search-form">
+						<label class="search-label">{% csrf_token %}
+						<select name="search_type" class="form-control select-option">
+								<option value="title" {% if search_type == 'title' %} selected {% endif %}>Title</option>
+								<option value="content" {% if search_type == 'content' %} selected {% endif %}>Content</option>
+								<option value="author" {% if search_type == 'author' %} selected {% endif %}>Author</option>
+								<option value="date" id="date-filter" {% if search_type == 'date' %} selected {% endif %}>Date</option>
+							</select>
+						</label>
+						<label class="search-label text">
+							<input type="search" class="form-control" placeholder="Search …" value="{{search_text}}" name="search_text" title="Search for:">
+						</label>
+						<label class="search-label date hide">
+							<input type="text" class="form-control" placeholder="From Date" value="{{from_date}}" name="from_date" id="from_date" readonly>
+						</label>
+						<label class="search-label date hide">							
+							<input type="text" class="form-control" placeholder="To Date" value="{{to_date}}" name="to_date" id="to_date" readonly>
+						</label>
+						<button type="submit" class="btn btn-primary"><i class="glyphicon glyphicon-search"></i></button>
+						<input type="button" id="reset-form" value="Clear" class="btn btn-primary">
+					</form>
+						
+				</div>
+			</div>	
+
+			{% if blog_post %}
+				{% for each in blog_post %}
+					<div class="col-md-11 blog-wrapper">
+				
+					<div class="blogs">
+						<div class="media">
+							<div class="media-left">
+								<img class="media-object profile-pic" src="{{each.user_profile.photo}}" alt="{{ user.first_name }}">
+							</div>
+							<div class="media-body display">
+								<h4 class="media-heading user-name">
+									<strong>
+										{{each.user_obj.first_name}} {{each.user_obj.last_name}}
+									</strong>
+									<span class="grey">updated a post on</span> <i class="glyphicon glyphicon-calendar"></i> {{each.post_info.created|date:'M d, Y'}}
+								</h4>
+							</div>
+						</div>
+
+						<div class=" blog col-md-11 col-md-offset-1">
+							<div class="tags">
+								{% for tag in each.post_info.tags %}
+									{% if tag.1 == 'NOUN' %}
+										<a href="/myblog/content/{{ tag.0 }}/">#{{tag.0}}</a>
+									{% endif %}
+								{% endfor %}
+							</div>
+							<div class="title">
+		    					<h3 class="page-header"><a href="/myblog/{{each.post_info.slug}}">{{each.post_info.title}}</a></h3>
+		    				</div>
+		    				<div class="content">
+								{{each.post_info.content|slice:"0:200"}}...
+							</div>
+							<div class="read-more pull-right col-md-offset-2">
+								<a href="/myblog/{{each.post_info.slug}}">
+									<button class="btn btn-primary read-more">Read more...</button>
+								</a>
+							</div>
+						</div>
+					</div>
+					<div class="clearfix">&nbsp;</div>
+				</div>
+				{% endfor %}
+					<div class="pagination">
+					    <span class="step-links">
+					        {% if paginate_data.has_previous %}
+					            <a href="?page={{ paginate_data.previous_page_number }}">previous</a>
+					        {% endif %}
+
+					        <span class="current">
+					            Page {{ paginate_data.number }} of {{ paginate_data.paginator.num_pages }}.
+					        </span>
+
+					        {% if paginate_data.has_next %}
+					            <a href="?page={{ paginate_data.next_page_number }}">next</a>
+					        {% endif %}
+					    </span>
+					</div>
+				{% else %}
+					<div class="col-md-11 blog-wrapper">
+						<div class="alert alert-warning" align="center">
+							<h3>No Posts!</h3>
+						</div>
+					</div>
+				{% endif %}
 		</div>
 	</div>
 </div>
+
+
+  <script>
+  $(document).ready(function() {
+    
+
+  	if($('.select-option').val() == 'date') {
+  		$('label.text').addClass('hide');
+  		$('label.date').removeClass('hide');
+  	}
+
+
+  	$('#reset-form').on('click', function() {
+		var data = {'search_text': '', 'search_type': ''};
+		$.ajax({
+			url: "/",
+		  	type: "POST",
+		  	data: data,
+		  	success: function(data) {
+		  		window.location.href = '/';
+		  	}
+		});
+  	});
+
+  	$('.select-option').on('change', function() {
+  		console.log($(this).val());
+  		if($(this).val() == 'date') {
+  			$('label.text').addClass('hide');
+  			$('label.date').removeClass('hide');
+  		} else {
+  			$('label.text').removeClass('hide');
+  			$('label.date').addClass('hide');
+  		}
+  	});
+
+  	$( "#from_date" ).datepicker({
+      defaultDate: "+1w",
+      changeMonth: true,
+      numberOfMonths: 1,
+      dateFormat: "yy-mm-dd",
+      onClose: function( selectedDate ) {
+        $( "#to_date" ).datepicker( "option", "minDate", selectedDate );
+      }
+    });
+
+    $( "#to_date" ).datepicker({
+      defaultDate: "+1w",
+      changeMonth: true,
+      numberOfMonths: 1,
+      dateFormat: "yy-mm-dd",
+      onClose: function( selectedDate ) {
+        $( "#from_date" ).datepicker( "option", "maxDate", selectedDate );
+      }
+    });
+
+
+
+
+  }); //end of document ready
+
+  </script>
+
+
 {% endblock body %}

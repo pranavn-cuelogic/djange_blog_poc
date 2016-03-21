@@ -1,9 +1,9 @@
 {% extends 'wrapper.html' %}
 {% load static %}
-
+{% load i18n %}
 {% block body %}
 <div class="jumbotron pad-50">
-	<h1 align="center">Tweet Me Sign-in!</h1>
+	<h1 align="center">{% trans 'Tweet Me Sign-in'%}!</h1>
 	<div class="container">
 		<form action="" method="post" class="form-horizontal col-md-6 col-md-offset-3">
 			{% csrf_token %}
@@ -16,16 +16,30 @@
 					<input type="password" id="id_password" name="password" class="form-control"placeholder="Password" />
 				</div>
 			</div>
-			<br>
-			<div class="col-md-6">
+			<div class="clearfix">&nbsp;</div>
+			<div class="col-md-6 margin-left25">
 				<input type="submit" value="Login" class="btn btn-primary btn-lg btn-block">
 			</div>
-			<div class="col-md-6">
+<!-- 			<div class="col-md-6">
 				<a href="{% url 'signup' %}" class="no-text-decoration">
 					<input type="button" value="Sign Up" class="btn btn-orange btn-lg btn-block">
 				</a>
+			</div> -->
+
+			<div class="col-md-12 or-text">OR</div>
+
+			<div class="clearfix">&nbsp;</div>
+			<div class="col-md-6">
+				<input type="button" onclick="fb_login();" value="facebook" class="btn btn-primary btn-lg btn-block">
 			</div>
+			<div class="col-md-6">
+				<a href="{% url 'signup' %}" class="no-text-decoration">
+					<input type="button" value="google+" class="btn btn-red btn-lg btn-block">
+				</a>
+			</div>
+
 		</form>
 	</div>
 </div>
+
 {% endblock body %}

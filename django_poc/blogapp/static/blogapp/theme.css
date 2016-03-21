@@ -28,6 +28,19 @@ body {
 	color: #FFF;
 	outline: none;
 }
+
+.btn-red {
+	background-color: #d73d32;
+	color: #FFF;
+	text-decoration: none;
+}
+
+.btn-red:hover {
+	background-color: #666;
+	color: #FFF;
+	outline: none;
+}
+
 .no-text-decoration{
 	text-decoration: none !important;
 }
@@ -57,29 +70,6 @@ div.jumbotron.pad-50 {
 	vertical-align: top;
 }
 
-/*.profile-pic {
-	width: 150px;
-	height: 150px;
-	border: 2px solid #888;
-}
-
-.media-left a span{
-	display:none;
-	color:#fff;
-	font-size: 14px;
-	float:none;
-	left:0;
-	right:0	;
-	text-align: center;
-}
-.media-left a:hover span{
-	display:block;
-}
-
-.profile-pic:hover {
-	opacity: 0.4;
-	background: #000;
-}*/
 .media-left a.upload-img{
 	position: relative;
 	display: inline-block;
@@ -149,4 +139,245 @@ line-height: 25px;
 
 .margin-top50 {
 	margin-top: 50px;
+}
+
+.media-left img.profile-pic{
+position: absolute;
+width: 50px;
+height: 50px;
+}
+
+.user-name {
+	font-size: 16px;
+    padding-left: 60px;
+    margin-top: 20px;
+}
+
+.blog-spacing {
+	border-bottom: solid 1px #ccc;
+	padding-bottom: 15px;
+	margin-bottom: 15px;
+}
+
+.grey {
+	color: #9197a3;
+}
+
+.blog div.content p {
+	font-size: 15px !important;
+}
+
+.blog div.tags {
+	font-size: 14px;
+	font-weight: bold;
+	font-style: italic;
+	color: #3b5998;
+}
+
+.blog div.tags a {
+	text-decoration: none;
+}
+
+.read-more{
+	margin: 20px 0 0 20px;
+
+}
+
+.blog-wrapper {
+	background: #fff;
+	border-radius: 3px;
+	padding-top: 20px;
+	margin: 10px auto 20px auto;
+    float: none;
+    overflow: hidden;
+    padding-bottom: 10px;
+    webkit-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+}
+
+.add-post-wrapper {
+	background: #fff;
+	border-radius: 3px;
+	padding: 10px 0px;
+	margin: 10px auto 20px auto;
+    float: none;
+    overflow: hidden;
+}
+
+seperator {
+	margin: 0 15px;
+}
+
+.blog-wrapper .blogs .media .media-left {
+	vertical-align: middle;
+}
+
+.add-post-wrapper .post-icon a{
+	color: #000;
+	text-decoration: none;
+}
+
+.add-post-wrapper .post-icon a:hover {
+	color: #337ab7;
+}
+
+.edit-title {
+	color: #000;
+    line-height: 24px;
+    vertical-align: top;
+    font-size: 15px;
+}
+
+.blogs .blog .title h3.page-header {
+	margin: 5px 0 5px;
+	font-size: 22px;
+}
+
+.blogs .blog .title h3.page-header a {
+	text-decoration: none;
+}
+
+
+.blog-wrapper .blogs{
+	overflow: hidden;
+}
+.blog-wrapper .blogs .blog{
+	padding: 3px;
+	margin-top: 25px;
+}
+
+.user-blog {
+	background: #6495ED;
+    padding: 15px;
+    border-radius: 2px;
+}
+
+.user-blog-title {
+	color: #337ab7;
+}
+
+.user-blog-body p {
+	font-size: 16px;
+}
+
+.user-blog-tags {
+	font-size: 12px;
+	font-weight: bold;
+	font-style: italic;
+}
+
+.user-blog-tags a{
+	text-decoration: none;
+}
+
+.search-bar-wrapper {
+	background: #999;
+    border-radius: 3px;
+    padding: 10px 0px;
+    margin: 10px auto 20px auto;
+    float: none;
+    overflow: hidden;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.author .author-img .author-pic {
+	height: 70px;
+	width: 70px;
+	border-radius: 50%;
+}
+
+.author .author-name {
+	vertical-align: top;
+	font-weight: bold;
+	font-size: 17px;
+	display: inline-block;
+	margin: 20px 0 0 5px;
+}
+
+.author .author-details {
+	margin: 10px;
+}
+
+.blog-content {
+	border-bottom: 4px solid #ddd;
+}
+
+.comment .comment-title {
+	border-bottom: 1px solid #6495ED;
+    padding: 15px;
+	border-radius: 2px;
+}
+
+.comment .user-comments-ul {
+	padding-left: 0px;
+}
+
+.comment .user-comments {
+	display: block;
+	margin: 8px 0px;
+	padding: 5px 0px;
+}
+
+.comment .no-comments {
+	text-align: center;
+	font-size: 18px;
+	font-weight: bold;
+	color: #888;
+}
+
+.comment .post-btn {
+	margin-top: 9px;
+}
+
+.user-comments div img.user-pic {
+	height: 40px;
+	width: 40px;
+}
+
+.user-comments .media .media-body .content-para{
+	font-size: 15px;
+	color: #000;
+}
+
+.user-comments .media .media-body p.comment-tag tag {
+	color: #9197a3
+}
+
+.user-comments .media .media-body p.comment-tag {
+	font-size: 12px;
+}
+
+.user-comments .media .media-body h4.media-heading {
+	color: #3b5998;
+	font-size: 14px;
+	font-weight: bold;
+}
+
+.user-comments .media .media-body h4.media-heading del{
+	color: #ff0000;
+	font-size: 14px;
+	cursor: pointer;
+}
+
+.new-comment label.loader .loader-img {
+	height: 50px;
+	width: 50px;
+}
+
+del span.loader .del-loader {
+	height: 20px;
+	width: 20px;
+}
+
+.or-text {
+    text-align: center;
+    margin-top: 30px;
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.margin-left25 {
+	margin-left: 25%;
 }

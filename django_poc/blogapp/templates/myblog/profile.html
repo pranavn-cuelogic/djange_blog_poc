@@ -13,7 +13,7 @@
 					<div class="media-left">
 						<form data-toggle="validator" role="form" action="/myblog/upload-pic/" method="post" enctype="multipart/form-data" class="custom-form form-horizontal" name="updatePic" id="updatePic">{% csrf_token %}
 							<a href="javascript:void(0);" class="pos-relative upload-img">
-							<img class="media-object profile-pic img-circle" src="/static/blogapp/user_profile_img/{{userProfile.photo}}" alt="{{ user.first_name }}">
+							<img class="media-object profile-pic img-circle" src="{{userProfile.photo}}" alt="{{ user.first_name }}">
 							<span class="img-text"><span><strong>Upload Pic</strong></span></span>
 							</a>
 							<input id="file-input" type="file" name="user_pic" class="hide"/>
@@ -68,14 +68,6 @@
         	$('#updatePic').submit();
         }
   	});
-
-  	// $('.img-text').mouseover(function() {
-  	// 	$('.profile-pic').css('opacity', '0.4');
-  	// });
-
-  	// $('.profile-pic').mouseout(function() {
-  	// 	$('.profile-pic').css('opacity', '1.0');
-  	// });
 
   }); //end of document ready
 
