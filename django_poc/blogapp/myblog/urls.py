@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.conf.urls import url, patterns, include
 from django.contrib import admin
+from django.conf.urls.i18n import i18n_patterns
 from myblog.views import *
 
 urlpatterns = patterns(

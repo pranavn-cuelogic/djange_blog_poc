@@ -1,12 +1,12 @@
 {% extends 'wrapper.html' %}
 {% load static %}
-
+{% load i18n %}
 {% block body %}
 <div class="jumbotron pad-50">
 	{% if form.errors %}
 	<p class="error">Please correct the errors below:</p>
 	{% endif %}
-	<h1 align="center">Tweet Me Sign-up here!</h1>
+	<h1 align="center">{% trans 'Tweet Me Sign-up here'%}!</h1>
 	<div class="container">
 		<form data-toggle="validator" role="form" action="" method="post" class="custom-form form-horizontal col-md-8 col-md-offset-2 col" name="formSignup" id="formSignup">{% csrf_token %}
 			<div class="form-group">
@@ -55,10 +55,10 @@
 
 			<div class="clearfix">&nbsp;</div>
 			<div class="col-md-3 col-md-offset-3">
-				<input type="submit" value="Signup" class="btn btn-primary btn-lg btn-block">
+				<input type="submit" value="{% trans 'Signup'%}" class="btn btn-primary btn-lg btn-block">
 			</div>
 			<div class="col-md-3">
-				<input type="reset" value="Reset" class="btn btn-primary btn-lg btn-block">
+				<input type="reset" value="{% trans 'Reset'%}" class="btn btn-primary btn-lg btn-block">
 			</div>
 			
 			

@@ -1,6 +1,7 @@
 from django import forms
 from captcha.fields import CaptchaField
 from myblog.models import User
+from django.utils.translation import ugettext_lazy as _
 
 attrs_dict = {
     'class': 'form-control',
@@ -24,7 +25,7 @@ class UserForm(forms.Form):
         widget=forms.TextInput(
             attrs=dict(
                 attrs_dict,
-                placeholder='First Name',
+                placeholder=_('First Name'),
             )
         ),
         error_messages={'required': 'Please enter Firstname'}
@@ -34,7 +35,7 @@ class UserForm(forms.Form):
         widget=forms.TextInput(
             attrs=dict(
                 attrs_dict,
-                placeholder='Last Name',
+                placeholder=_('Last Name'),
             )
         ),
         strip=True,
@@ -45,7 +46,7 @@ class UserForm(forms.Form):
             attrs=dict(
                 attrs_dict,
                 maxlength=200,
-                placeholder='Email-id',
+                placeholder=_('Email-id'),
             )
         ),
         label='Email',
@@ -56,7 +57,7 @@ class UserForm(forms.Form):
         widget=forms.PasswordInput(
             attrs=dict(
                 attrs_dict,
-                placeholder='Password',
+                placeholder=_('Password'),
             )
         ),
         label='Password',
@@ -66,7 +67,7 @@ class UserForm(forms.Form):
         widget=forms.PasswordInput(
             attrs=dict(
                 attrs_dict,
-                placeholder='Confirm Password',
+                placeholder=_('Confirm Password',)
             )
         ),
         label='Confirm Password',

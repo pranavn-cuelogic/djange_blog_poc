@@ -15,9 +15,16 @@ Including another URLconf
 """
 from django.conf.urls import url, patterns, include
 from django.contrib import admin
+from django.conf.urls.i18n import i18n_patterns
 from blogapp.views import *
 
-urlpatterns = patterns(
+urlpatterns = [
+    url(r'^(?P<filename>(robots.txt)|(humans.txt))$',
+        home_view, name='home'),
+]
+
+
+urlpatterns += i18n_patterns(
     '',
     url(r'^admin/', admin.site.urls),
     url(r'^$', home_view, name='home'),

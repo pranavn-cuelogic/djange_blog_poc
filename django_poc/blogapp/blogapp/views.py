@@ -32,7 +32,7 @@ def get_tags(content):
     text = nltk.word_tokenize(content)
     post_tagged = pos_tag(text)
     get_tags = [(word, map_tag('en-ptb', 'universal', tag)) for word, tag in post_tagged]
-    return get_tags
+    return set(get_tags)
 
 
 @csrf_exempt
@@ -80,6 +80,8 @@ def home_view(request):
             user_blog_data['post_info'].tags = get_tags(each.content)
             user_blog_data['user_obj'] = User.objects.get(id=each.userid.id)
             user_blog_data['user_profile'] = UserProfile.objects.get(user_id=each.userid.id)
+            if not user_blog_data['user_profile'].photo:
+                user_blog_data['user_profile'].photo = settings.USER_IMAGE_VIEW_PATH + 'default.png'
         except:
             return render(request, 'home.html', 'Error : Object does not exist')
         user_blog_data_list.append(user_blog_data)
